@@ -11,13 +11,20 @@ const cors = require('cors');
 // importing express-fileupload
 const acceptFOrmData = require('express-fileupload')
 const loggerMiddleware = require("./middleware/loggerMiddleware");
-
+const {
+    globalLimiter,
+    authLimiter,
+    apiLimiter,
+} = require("./middleware/rateLimiter");
 // creating an express application. 
 const app = express();
 app.use(express.json())
 
 // Logger middleware
 app.use(loggerMiddleware);
+
+// Rate limiter
+app.use(globalLimiter);
 //configure cors policy
 const corsOptions = {
     origin: true,
@@ -53,9 +60,9 @@ app.get('/test', (req, res) => {
 
 
 //configuring routes
-app.use('/api/user', require('./routes/userRoutes'))
+app.use('/api/user', authLimiter, require('./routes/userRoutes'))
 
-
+app.use("/api", apiLimiter);
 app.use('/api/category', require('./routes/categoryRoutes'))
 app.use('/api/product', require('./routes/productRoutes'))
 app.use('/api/cart', require('./routes/cartRoutes'))
