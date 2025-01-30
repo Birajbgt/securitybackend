@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -60,6 +61,13 @@ const userSchema = new mongoose.Schema({
 userSchema.virtual("isLocked").get(function () {
     return !!(this.lockUntil && this.lockUntil > Date.now());
 });
+
+
+userSchema.getSignedJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE || '30d'
+    });
+};
 
 const User = mongoose.model('users', userSchema)
 

@@ -357,6 +357,15 @@ const loginUser = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
+        const cookieOptions = {
+            expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 1 day
+            httpOnly: true,
+        };
+        res.clearCookie("jwt");
+        res.cookie("jwt", token, cookieOptions);
+        // remove password from output
+        user.password = undefined;
+        
         console.log(token);
         console.log(user);
         res.status(201).json({
