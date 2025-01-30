@@ -10,11 +10,14 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 // importing express-fileupload
 const acceptFOrmData = require('express-fileupload')
+const loggerMiddleware = require("./middleware/loggerMiddleware");
 
 // creating an express application. 
 const app = express();
 app.use(express.json())
 
+// Logger middleware
+app.use(loggerMiddleware);
 //configure cors policy
 const corsOptions = {
     origin: true,
