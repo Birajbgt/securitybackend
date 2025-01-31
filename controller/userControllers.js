@@ -362,17 +362,24 @@ const loginUser = async (req, res) => {
             httpOnly: true,
         };
         res.clearCookie("jwt");
-        res.cookie("jwt", token, cookieOptions);
+        // res.cookie("jwt", token, cookieOptions);
         // remove password from output
-        user.password = undefined;
-        
+        // user.password = undefined;
+
         console.log(token);
         console.log(user);
         res.status(201).json({
             sucess: true,
             message: "Logged in Successfully!",
             token: token,
-            user: user,
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role
+
+            }
         });
     } catch (err) {
         console.log(err);

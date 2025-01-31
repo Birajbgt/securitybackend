@@ -3,7 +3,7 @@ const pino = require("pino");
 
 // MongoDB connection string - make sure to add this to your environment variables
 const MONGODB_URI =
-    process.env.MONGODB_LOCAL || "mongodb://localhost:27017/security";
+    process.env.MONGODB_CLOUD || "mongodb+srv://virajbogati:1234567890@cluster0.h9fqf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create MongoDB transport configuration
 const mongoTransport = {

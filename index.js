@@ -16,8 +16,15 @@ const {
     authLimiter,
     apiLimiter,
 } = require("./middleware/rateLimiter");
-// creating an express application. 
+
 const app = express();
+dotenv.config();
+const fs = require("fs");
+const https = require("https");
+const http = require("http");
+//connecting to databas 
+connectDatabase()
+
 app.use(express.json())
 
 // Logger middleware
@@ -35,7 +42,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 //dotenv configuration
-dotenv.config()
+
 
 
 // config from data
@@ -48,8 +55,6 @@ app.use(express.static('./public'));
 const PORT = process.env.PORT;;
 
 
-//connecting to databas 
-connectDatabase()
 
 
 //making a test endpoint.
@@ -62,7 +67,7 @@ app.get('/test', (req, res) => {
 //configuring routes
 app.use('/api/user', authLimiter, require('./routes/userRoutes'))
 
-app.use("/api", apiLimiter);
+// app.use("/api", apiLimiter);
 app.use('/api/category', require('./routes/categoryRoutes'))
 app.use('/api/product', require('./routes/productRoutes'))
 app.use('/api/cart', require('./routes/cartRoutes'))
@@ -84,11 +89,20 @@ app.get("/api/auth/validate-token", async (req, res) => {
         return res.status(401).json({ success: false, message: "Invalid token" });
     }
 });
+const httpsOptions = {
+    key: fs.readFileSync("./localhost-key.pem"),
+    cert: fs.readFileSync("./localhost.pem"),
+};
+// // HTTPS server
+// const httpsServer = https.createServer(httpsOptions, app);
+https.createServer(httpsOptions, app).listen(PORT, () => {
+    console.log(`Secure server running at https://localhost:${PORT}`);
+});
 
 
 // starting the server. 
-app.listen(PORT, () => {
-    console.log(`Server - app is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server - app is running on port ${PORT}`);
+// });
 
 module.exports = app;

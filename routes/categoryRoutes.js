@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const categoryController = require('../controller/categoryControllers');
+const { adminGuard } = require('../middleware/auth');
 
 // create Category 
-router.post('/create', categoryController.createCategory)
+router.post('/create', adminGuard, categoryController.createCategory)
 
 // delete Category
-router.delete('/delete_category/:id', categoryController.deleteCategory)
+router.delete('/delete_category/:id', adminGuard, categoryController.deleteCategory)
 
 // get all caterogy
 

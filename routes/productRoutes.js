@@ -5,7 +5,7 @@ const { authGuard, adminGuard } = require('../middleware/auth');
 
 
 // create Category 
-router.post('/create', authGuard, productController.createProduct);
+router.post('/create', adminGuard, productController.createProduct);
 
 // single product 
 router.get('/get_single_product/:id', productController.getSingleProduct)
@@ -16,11 +16,11 @@ router.get('/get_all_products', productController.getAllProducts)
 
 
 //delete_product
-router.delete('/delete_product/:id', productController.deleteProduct);
+router.delete('/delete_product/:id', adminGuard, productController.deleteProduct);
 
 
 // update_product
-router.put('/update_product/:id', productController.updateProduct);
+router.put('/update_product/:id', adminGuard, productController.updateProduct);
 
 // PaginationProducts
 router.get('/pagination', productController.paginationProducts)
