@@ -216,7 +216,6 @@ const verifyEmail = async (req, res) => {
 
 // }
 const createUser = async (req, res) => {
-    console.log("Incoming Request Data:", req.body); // Log request data
 
     const { firstName, lastName, phone, email, password } = req.body;
 
@@ -268,7 +267,6 @@ const createUser = async (req, res) => {
         await newUser.save();
 
         // Log email before sending
-        console.log("Sending verification email to:", newUser.email);
 
         if (!newUser.email) {
             console.error("Error: Email is missing in newUser");
@@ -289,7 +287,6 @@ const createUser = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         res.json({
             success: false,
             message: "Internal Server Error!",
@@ -299,7 +296,6 @@ const createUser = async (req, res) => {
 
 
 const loginUser = async (req, res) => {
-    console.log(req.body);
 
     const { email, password } = req.body;
 
@@ -355,19 +351,17 @@ const loginUser = async (req, res) => {
         const token = await jwt.sign(
             { id: user._id, isAdmin: user.role === "admin" },
             process.env.JWT_SECRET,
-            { expiresIn: "1h" }
+            { expiresIn: "5h" }
         );
         const cookieOptions = {
-            expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 1 day
+            expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 1 day
             httpOnly: true,
         };
         res.clearCookie("jwt");
-        // res.cookie("jwt", token, cookieOptions);
+        res.cookie("jwt", token, cookieOptions);
         // remove password from output
         // user.password = undefined;
 
-        console.log(token);
-        console.log(user);
         res.status(201).json({
             sucess: true,
             message: "Logged in Successfully!",
@@ -377,12 +371,11 @@ const loginUser = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role
+                isAdmin: user.isAdmin
 
             }
         });
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
             success: false,
             message: "Internal Server error",
@@ -400,7 +393,6 @@ const getMe = async (req, res) => {
 const getUserData = async (req, res) => {
     try {
         const userId = req.params.id; // Get user ID from request parameters
-        console.log('User ID:', userId); // Log the user ID
 
         const user = await userModel.findById(userId);
         if (!user) {
@@ -420,9 +412,8 @@ const getUserData = async (req, res) => {
                 phone: user.phone
             }
         });
-        console.log(user);
     } catch (error) {
-        console.log('getUserData error:', error); // Log error
+        // console.log('getUserData error:', error); // Log error
         return res.status(500).json({
             success: false,
             message: "Internal server error",
@@ -547,7 +538,7 @@ const forgotPassword = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             'success': false,
             'message': 'Server Error!'
@@ -557,7 +548,7 @@ const forgotPassword = async (req, res) => {
 
 // get single user
 const getSingleUser = async (req, res) => {
-    console.log(req.users);
+    // console.log(req.users);
     // console.log(req);
     const id = req.user.userId;
     try {
@@ -574,7 +565,7 @@ const getSingleUser = async (req, res) => {
             user: user,
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             success: false,
             message: "Internal server error",
@@ -629,7 +620,7 @@ const verifyOtpAndSetPassword = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({
             'success': false,
             'message': 'Server Error!'
@@ -639,7 +630,7 @@ const verifyOtpAndSetPassword = async (req, res) => {
 }
 const getToken = async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const { id } = req.body;
 
         const user = await userModel.findById(id);
@@ -661,7 +652,7 @@ const getToken = async (req, res) => {
             token: token,
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             success: false,
             message: "Internal Server Error",
@@ -700,7 +691,7 @@ const deleteUser = async (req, res) => {
             message: "User deleted successfully"
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             success: false,
             message: "Internal Server Error!",

@@ -65,7 +65,7 @@ userSchema.virtual("isLocked").get(function () {
 
 userSchema.getSignedJwtToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE || '30d'
+        expiresIn: process.env.JWT_EXPIRE || '25d'
     });
 };
 

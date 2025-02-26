@@ -58,7 +58,6 @@ const addToCart = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json("Server Error");
     }
 };
@@ -87,7 +86,6 @@ const updateCart = async (req, res) => {
 
         // Convert quantity to a number if it's provided as a string
         quantity = Number(quantity);
-        console.log(typeof quantity);
         // Validate quantity here if needed
         if (isNaN(quantity) || quantity <= 0) {
             return res
@@ -122,7 +120,6 @@ const removeFromCart = async (req, res) => {
             message: " removed from cart successfully"
         })
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             success: false,
             message: "Server Error"
@@ -139,7 +136,6 @@ const updateUserCartStatus = async (req, res) => {
         }
 
         const cart = await Cart.updateMany({ userID: userId }, { status: status });
-        console.log("updated cart",cart)
         res.status(201).json({ message: "Cart status updated successfully", cart :cart });
     } catch (error) {
         res.status(500).json({ error: error.message });

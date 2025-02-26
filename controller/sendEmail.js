@@ -27,7 +27,7 @@ const sendEmail = async (options) => {
         return;
     }
 
-    console.log("Attempting to send email to:", options.email); // Log recipient
+    // console.log("Attempting to send email to:", options.email); // Log recipient
 
     const transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
@@ -46,7 +46,7 @@ const sendEmail = async (options) => {
 
     try {
         const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent successfully:", info.response);
+        // console.log("Email sent successfully:", info.response);
     } catch (error) {
         console.error("Error sending email:", error);
     }

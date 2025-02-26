@@ -2,7 +2,7 @@ const rateLimit = require("express-rate-limit");
 
 // General limiter for all routes
 exports.globalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 5 * 60 * 1000, // 15 minutes
     max: 100000,
     message: {
         status: "error",
@@ -30,7 +30,7 @@ exports.authLimiter = rateLimit({
 
 // API routes limiter (for /api endpoints)
 exports.apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 5 * 60 * 1000, // 15 minutes
     max: 50000,
     message: {
         status: "error",

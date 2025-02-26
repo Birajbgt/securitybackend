@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require('../model/userModel');
 const authGuard = (req, res, next) => {
     // check incomming Data
-    console.log(req.headers)
+    // console.log(req.headers)
 
     // get authorization data from headers
     const authHeader = req.headers.authorization;
@@ -31,7 +31,7 @@ const authGuard = (req, res, next) => {
         next()
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(400).json({
             success: false,
             message: "Not Authenticated!"
@@ -53,7 +53,7 @@ const protect = async (req, res, next) => {
 
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("decoded", decoded);
+        // console.log("decoded", decoded);
         // Get user from database
         const user = await User.findById(decoded.id).select('-password');
 
@@ -82,7 +82,7 @@ const protect = async (req, res, next) => {
 // Admin Guard 
 const adminGuard = (req, res, next) => {
     // check incomming Data
-    console.log(req.headers)
+    // console.log(req.headers)
 
     // get authorization data from headers
     const authHeader = req.headers.authorization;
@@ -104,11 +104,13 @@ const adminGuard = (req, res, next) => {
             message: "Token not found!"
         })
     }
+
     // verify
     try {
         const decodeUserData = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decodeUserData; // user info :id and isAdmin
-        if (req.user.isAdmin === false) {
+        // console.log(req.user)
+        if (req.user.isAdmin === true) {
             return res.status(400).json({
                 success: false,
                 message: "Permission Delined!"
@@ -117,7 +119,7 @@ const adminGuard = (req, res, next) => {
         next()
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(400).json({
             success: false,
             message: "Not Authenticated!"
@@ -137,7 +139,7 @@ const checkAccountLockout = async (req, res, next) => {
         }
         next();
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.json({ success: false, message: "Server error." });
     }
 };
@@ -162,7 +164,7 @@ const checkPasswordExpiry = async (req, res, next) => {
         }
         next();
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.json({ success: false, message: "Server error." });
     }
 };

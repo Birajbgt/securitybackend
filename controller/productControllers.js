@@ -5,8 +5,6 @@ const productModel = require('../model/productModel');
 const createProduct = async (req, res) => {
 
     //check incoming data
-    console.log(req.body)
-    console.log(req.files)
 
     //Destructuring the body data(json)
     const { productName, productPrice, productCategory, productDescription } = req.body;
@@ -55,7 +53,6 @@ const createProduct = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             "success": false,
             "message": "Internal Server Error!",
@@ -89,7 +86,7 @@ const getSingleProduct = async (req, res) => {
         );
     }
     catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             "success": false,
             "message": "Internal Server Error!",
@@ -114,7 +111,7 @@ const getAllProducts = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error)
+        (error)
         res.status(500).json({
             "success": false,
             "message": "Internal Server Error!",
@@ -135,7 +132,7 @@ const deleteProduct = async (req, res) => {
 
     }
     catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             "success": false,
             "message": "Internal Server Error!",
@@ -186,7 +183,7 @@ const updateProduct = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             "success": false,
             "message": "Internal server error",
@@ -221,7 +218,7 @@ const paginationProducts = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             "success": false,
             "message": "No Product Found",
@@ -264,7 +261,7 @@ const productReviewController = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({
             "success": false,
             "message": "Error in Review comment Api",
@@ -290,9 +287,6 @@ const productReviewControllers = async (req, res) => {
         }
         // review object
 
-        console.log(req.user.id)
-        console.log(req.user)
-        console.log(req.user.firstname)
 
         const review = {
             firstname: req.user.firstname,
